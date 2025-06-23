@@ -36,7 +36,11 @@ function App() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Something went wrong');
+        if (data.error === 'Company not found in FMP') {
+          setError('Company not found. Please check the name or symbol and try again.');
+        } else {
+          setError(data.error || 'Something went wrong');
+        }
       } else {
         setDigest(data);
       }
