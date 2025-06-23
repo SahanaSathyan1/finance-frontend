@@ -15,17 +15,29 @@ const Insights: React.FC<InsightsProps> = ({ digest }) => {
   const handleDownloadPDF = async () => {
     const reportElement = document.getElementById('full-insights-report');
     if (reportElement) {
-      const canvas = await html2canvas(reportElement);
+      const canvas = await html2canvas(reportElement, { scale: 2 });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
       const pageWidth = pdf.internal.pageSize.getWidth();
-      // @ts-ignore: getImageProperties is a static function on jsPDF
-      const imgProps = (jsPDF as any).getImageProperties
-        ? (jsPDF as any).getImageProperties(imgData)
-        : { width: canvas.width, height: canvas.height };
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgProps = { width: canvas.width, height: canvas.height };
       const pdfWidth = pageWidth;
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      let position = 0;
+      let remainingHeight = pdfHeight;
+
+      // Add first page
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      remainingHeight -= pageHeight;
+      position -= pageHeight;
+
+      // Add more pages if needed
+      while (remainingHeight > 0) {
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        remainingHeight -= pageHeight;
+        position -= pageHeight;
+      }
       pdf.save('financial-report.pdf');
     }
   };
