@@ -42,11 +42,6 @@ const Insights: React.FC<InsightsProps> = ({ digest }) => {
     }
   };
 
-  const handleSaveReport = () => {
-    // Download as PDF instead of JSON
-    handleDownloadPDF();
-  };
-
   return (
     <div className="space-y-8" id="insights-report">
       {/* Sticky header removed for full scroll-away effect */}
@@ -310,9 +305,6 @@ const Insights: React.FC<InsightsProps> = ({ digest }) => {
       <div className="flex space-x-4 mt-8">
         <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-sm" onClick={handleDownloadPDF}>
           Download as PDF
-        </button>
-        <button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-all duration-200 shadow-sm" onClick={handleSaveReport}>
-          Save Report
         </button>
       </div>
     </div>
