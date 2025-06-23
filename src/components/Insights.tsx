@@ -31,11 +31,8 @@ const Insights: React.FC<InsightsProps> = ({ digest }) => {
   };
 
   const handleSaveReport = () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(digest, null, 2));
-    const dlAnchorElem = document.createElement('a');
-    dlAnchorElem.setAttribute("href", dataStr);
-    dlAnchorElem.setAttribute("download", "financial-report.json");
-    dlAnchorElem.click();
+    // Download as PDF instead of JSON
+    handleDownloadPDF();
   };
 
   return (
